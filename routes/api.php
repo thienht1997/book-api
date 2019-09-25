@@ -20,4 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix'=>'book'], function (){
     Route::get('/', 'BookController@index')->name('books.all');
+    Route::post('/store', 'BookController@store')->name('books.store');
+    Route::delete('delete/{id}', 'BookController@destroy')->name('books.destroy');
 });
+Route::group(['prefix'=>'category'], function (){
+    Route::get('/', 'CategoryController@index')->name('categories.all');
+});
+Route::group(['prefix'=>'author'], function (){
+    Route::get('/', 'AuthorController@index')->name('authors.all');
+});
+
+Route::get('images/{image_file}', 'BookController@countryList');

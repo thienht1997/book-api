@@ -1,4 +1,15 @@
 <?php
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Request-Method: POST');
+// header('Access-Control-Allow-Headers: *');
+// header('Access-Control-Request-Headers: *');
+
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Headers: *');
+header("Access-Control-Allow-Methods: *");
+
+
+
 
 /**
  * Laravel - A PHP Framework For Web Artisans
