@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix'=>'book'], function (){
     Route::get('/', 'BookController@index')->name('books.all');
     Route::post('/store', 'BookController@store')->name('books.store');
+    Route::get('/{id}', 'BookController@show')->name('books.show');
+    Route::put('update/{id}', 'BookController@update')->name('books.update');
     Route::delete('delete/{id}', 'BookController@destroy')->name('books.destroy');
 });
 Route::group(['prefix'=>'category'], function (){

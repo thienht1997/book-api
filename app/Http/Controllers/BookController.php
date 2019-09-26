@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Book;
+use App\Http\Requests\StoreBookValidation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,7 +15,7 @@ class BookController extends Controller
         $books = DB::table('books')
             ->join('authors', 'authors.id', '=', 'books.author_id')
             ->join('categories', 'categories.id', '=', 'books.category_id')
-            ->select('books.id', 'books.name', 'books.price', 'books.quantity', 'books.image', 'books.introduce', 'authors.name as authorName', 'categories.name as categoryName')
+            ->select('books.*','authors.name as authorName', 'categories.name as categoryName')
             ->orderBy('id')
             ->get();
         return response()->json($books, 200);
@@ -24,7 +25,7 @@ class BookController extends Controller
         return response()->download(public_path("images/$image_file"), 'image');
     }
 
-    public function store(Request $request)
+    public function store(StoreBookValidation $request)
     {
         $book = $request->all();
         if (!$request->hasFile('image')) {
@@ -41,6 +42,43 @@ class BookController extends Controller
         return response()->json($message,200);
 
     }
+
+    public function show($id)
+    {
+        $book = Book::find($id);
+        $statusCode = 200;
+        if (!$book)
+            $statusCode = 404;
+
+        return response()->json($book, $statusCode);
+    }
+
+    public function update(Request $request, $id)
+    {   
+        $book = Book::findOrFail($id);
+
+        if (!$book) {
+            $statusCode = 404;
+            $message = "Không tìm thấy sách";
+        } else {
+
+            $attribute = $request->all();
+            if (!$request->hasFile('image')) {
+                $request['image'] = '';
+            } else {
+                $file = $request->file('image');
+                $fileName = $file->getClientOriginalName();
+                $newFileName = rand(11111, 99999) . "_" . $fileName;
+                $request->file('image')->move('images', $newFileName);
+                $attribute['image']= $newFileName;
+            }
+            $book->update($attribute);
+            $statusCode = 200;
+            $message = "Update thành công";
+        }
+        return response()->json($message );
+    }
+
     public function destroy($id)
     {
         $book = Book::find($id);
