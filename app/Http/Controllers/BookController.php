@@ -38,14 +38,16 @@ class BookController extends Controller
             $book['image'] = $newFileName;
         }
         Book::create($book);
-        $message = "Đã thêm thành công";
-        return response()->json($message,200);
+        $data = [
+            'message' => trans('messages.store_success')
+          ];
+        return response()->json($data,200);
 
     }
 
     public function show($id)
     {
-        $book = Book::find($id);
+        $book = Book::findOrFail($id);
         $statusCode = 200;
         if (!$book)
             $statusCode = 404;
@@ -59,7 +61,9 @@ class BookController extends Controller
 
         if (!$book) {
             $statusCode = 404;
-            $message = "Không tìm thấy sách";
+            $data = [
+                'error_message' => trans('messages.find_error')
+              ];
         } else {
 
             $attribute = $request->all();
@@ -74,9 +78,10 @@ class BookController extends Controller
             }
             $book->update($attribute);
             $statusCode = 200;
-            $message = "Update thành công";
-        }
-        return response()->json($message );
+            $data = [
+                'message' => trans('messages.update_success')
+              ];        }
+        return response()->json($data, $statusCode);
     }
 
     public function destroy($id)
@@ -84,13 +89,17 @@ class BookController extends Controller
         $book = Book::find($id);
         if (!$book) {
             $statusCode= 404;
-            $message = "Không tìm thấy sách";
+            $data = [
+                'error_message' => trans('messages.find_error')
+              ];  
         }
         if ($book) {
             $book->delete();
             $statusCode = 200;
-            $message = "Đã xóa!";
+            $data = [
+                'message' => trans('messages.delete_success')
+              ];  
         }
-        return response()->json($message, $statusCode);
+        return response()->json($data, $statusCode);
     }
 }

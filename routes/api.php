@@ -32,4 +32,4 @@ Route::group(['prefix'=>'author'], function (){
     Route::get('/', 'AuthorController@index')->name('authors.all');
 });
 
-Route::get('images/{image_file}', 'BookController@countryList');
+Route::get('images/{image_file}', 'BookController@showImage');
