@@ -47,8 +47,6 @@ return [
             'driver' => 'mysql',
             'url' => env('mysql://bd5f49114208a2:0eef053f@us-cdbr-iron-east-02.cleardb.net/heroku_c4b7cc173005165?reconnect=true'),
             'host' => env('DB_HOST', 'us-cdbr-iron-east-02.cleardb.net'),
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'heroku_c4b7cc173005165'),
             'username' => env('DB_USERNAME', 'bd5f49114208a2'),
