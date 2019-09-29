@@ -45,6 +45,27 @@ class BookController extends Controller
 
     }
 
+    public function upload(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            $request['image'] = '';
+            $data = [
+                'message' => trans('Fail!!!')
+              ];
+        } else {
+            $file = $request->file('image');
+            $fileName = $file->getClientOriginalName();
+            $newFileName =  $fileName;
+            $request->file('image')->move('images',$newFileName);
+            $data = [
+                'message' => trans('Succes!!!')
+              ];
+        }
+
+        return response()->json($data,200);
+
+    }
+
     public function show($id)
     {
         $book = Book::findOrFail($id);
@@ -56,7 +77,7 @@ class BookController extends Controller
     }
 
     public function update(Request $request, $id)
-    {   
+    {
         $book = Book::findOrFail($id);
 
         if (!$book) {
@@ -91,14 +112,14 @@ class BookController extends Controller
             $statusCode= 404;
             $data = [
                 'error_message' => trans('messages.find_error')
-              ];  
+              ];
         }
         if ($book) {
             $book->delete();
             $statusCode = 200;
             $data = [
                 'message' => trans('messages.delete_success')
-              ];  
+              ];
         }
         return response()->json($data, $statusCode);
     }

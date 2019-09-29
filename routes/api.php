@@ -33,3 +33,6 @@ Route::group(['prefix'=>'author'], function (){
 });
 
 Route::get('images/{image_file}', 'BookController@showImage');
+
+Route::post('upload', 'BookController@upload');
+
