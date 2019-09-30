@@ -81,7 +81,7 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $book->update($request->all());
         $old_img=$book->image;
-        if($request->image = ''){
+        if(!$request->image){
            $book->image = $old_img;
         }
            $book->save();
