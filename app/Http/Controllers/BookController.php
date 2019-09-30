@@ -79,17 +79,17 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         $book = Book::findOrFail($id);
-
+        $old_img = $book->image;
         if (!$book) {
             $statusCode = 404;
             $data = [
                 'error_message' => trans('messages.find_error')
               ];
         } else {
-
+            
             $attribute = $request->all();
             if (!$request->hasFile('image')) {
-                $request['image'] = '';
+                $attribute['image'] = $old_img;
             } else {
                 $file = $request->file('image');
                 $fileName = $file->getClientOriginalName();
