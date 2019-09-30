@@ -78,7 +78,18 @@ class BookController extends Controller
 
     public function update(Request $request, $id)
     {
-    
+        $book = Book::findOrFail($id);
+        $book->update($request->all());
+        $old_img=$book->image;
+        if(!$request->image){
+           $book->image = $old_img;
+        }
+           $book->save();
+            $statusCode = 200;
+            $data = [
+                'message' => trans('messages.update_success')
+              ];        
+        return response()->json($data, $statusCode);
     }
 
     public function destroy($id)
